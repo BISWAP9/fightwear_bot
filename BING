@@ -1,0 +1,35 @@
+// ==UserScript==
+// @name         Bing Bot
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Bot for Bing
+// @author       Laptov Victor
+// @match        https://www.bing.com/*
+// @match        https://fightwear.ru/
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
+// ==/UserScript==
+
+
+let links = document.links;
+let search = document.getElementsByName("search")[0];
+let keywords = ["эксклюзивно в fightwear", "все для BJJ", "форма для самбо"];
+let keyword = keywords[getRandom(0, keywords.length)];
+
+if (search !== undefined) {
+  document.getElementsByName("q")[0].value = keyword;
+  search.click();
+} else if (document.links[0].baseURI !== "https://fightwear.ru/*"){
+  for(let i=0; i < links.length; i++) {
+    if (links[i].href.indexOf("fightwear.ru") !== -1){
+      let link = links[i];
+      console.log(`Нашел строку ${link}`);
+      link.click();
+      break;
+    }
+  }
+}
+
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min) + min)
+}
